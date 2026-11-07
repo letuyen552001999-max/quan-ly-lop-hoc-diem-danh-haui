@@ -1,0 +1,117 @@
+-- NHÓM 15 - THỰC TẬP CƠ SỞ NGÀNH (HAUI)
+-- CSDL: Quản lý lớp học và điểm danh sinh viên
+-- Dùng cho MySQL 8 / MariaDB của XAMPP (dữ liệu minh họa, không phải dữ liệu thật).
+-- LƯU Ý: Chỉ nhập tệp này vào một CSDL thử nghiệm MỚI.
+CREATE DATABASE IF NOT EXISTS ql_lophoc_diemdanh CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE ql_lophoc_diemdanh;
+
+CREATE TABLE IF NOT EXISTS LOP (
+    MaLop VARCHAR(20) PRIMARY KEY,
+    TenLop VARCHAR(100) NOT NULL,
+    Khoa VARCHAR(10) NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS SINHVIEN (
+    MaSV VARCHAR(20) PRIMARY KEY,
+    HoTen VARCHAR(100) NOT NULL,
+    MaLop VARCHAR(20) NOT NULL,
+    CONSTRAINT fk_sv_lop FOREIGN KEY (MaLop) REFERENCES LOP(MaLop)
+        ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS GIANGVIEN (
+    MaGV VARCHAR(20) PRIMARY KEY,
+    HoTen VARCHAR(100) NOT NULL,
+    BoMon VARCHAR(100) DEFAULT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS LICHHOC (
+    MaLich INT AUTO_INCREMENT PRIMARY KEY,
+    MaLop VARCHAR(20) NOT NULL,
+    MaGV VARCHAR(20) NOT NULL,
+    MonHoc VARCHAR(100) NOT NULL,
+    Thu INT NOT NULL,
+    GioBatDau TIME NOT NULL,
+    GioKetThuc TIME NOT NULL,
+    Phong VARCHAR(50) DEFAULT NULL,
+    CONSTRAINT fk_lich_lop FOREIGN KEY (MaLop) REFERENCES LOP(MaLop)
+        ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk_lich_gv FOREIGN KEY (MaGV) REFERENCES GIANGVIEN(MaGV)
+        ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT ck_lich_thu CHECK (Thu BETWEEN 2 AND 8),
+    CONSTRAINT ck_lich_gio CHECK (GioKetThuc > GioBatDau)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS BUOIHOC (
+    MaBuoi VARCHAR(20) PRIMARY KEY,
+    MaLich INT NOT NULL,
+    NgayHoc DATE NOT NULL,
+    NoiDung VARCHAR(255) DEFAULT NULL,
+    CONSTRAINT fk_buoi_lich FOREIGN KEY (MaLich) REFERENCES LICHHOC(MaLich)
+        ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS DIEMDANH (
+    MaBuoi VARCHAR(20) NOT NULL,
+    MaSV VARCHAR(20) NOT NULL,
+    TrangThai VARCHAR(20) NOT NULL,
+    ThoiGian TIME DEFAULT NULL,
+    GhiChu VARCHAR(255) DEFAULT NULL,
+    PRIMARY KEY (MaBuoi, MaSV),
+    CONSTRAINT fk_dd_buoi FOREIGN KEY (MaBuoi) REFERENCES BUOIHOC(MaBuoi)
+        ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk_dd_sv FOREIGN KEY (MaSV) REFERENCES SINHVIEN(MaSV)
+        ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT ck_dd_trangthai CHECK (TrangThai IN ('Có mặt','Vắng','Đi muộn','Có phép'))
+) ENGINE=InnoDB;
+
+-- Hai bảng hỗ trợ triển khai, chưa có trong hình ERD 6 bảng của báo cáo gốc.
+CREATE TABLE IF NOT EXISTS TAIKHOAN (
+    MaTK INT AUTO_INCREMENT PRIMARY KEY,
+    TenDangNhap VARCHAR(50) NOT NULL UNIQUE,
+    MatKhauHash VARCHAR(255) NOT NULL,
+    VaiTro VARCHAR(20) NOT NULL,
+    MaSV VARCHAR(20) DEFAULT NULL UNIQUE,
+    MaGV VARCHAR(20) DEFAULT NULL UNIQUE,
+    TrangThai TINYINT(1) NOT NULL DEFAULT 1,
+    CONSTRAINT fk_tk_sv FOREIGN KEY (MaSV) REFERENCES SINHVIEN(MaSV)
+        ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk_tk_gv FOREIGN KEY (MaGV) REFERENCES GIANGVIEN(MaGV)
+        ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT ck_tk_vaitro CHECK (VaiTro IN ('QUAN_TRI_VIEN','GIANG_VIEN','SINH_VIEN'))
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS THONGBAO (
+    MaTB INT AUTO_INCREMENT PRIMARY KEY,
+    MaSV VARCHAR(20) NOT NULL,
+    MaBuoi VARCHAR(20) DEFAULT NULL,
+    NoiDung VARCHAR(255) NOT NULL,
+    DaXem TINYINT(1) NOT NULL DEFAULT 0,
+    ThoiDiem DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_tb_sv FOREIGN KEY (MaSV) REFERENCES SINHVIEN(MaSV)
+        ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk_tb_buoi FOREIGN KEY (MaBuoi) REFERENCES BUOIHOC(MaBuoi)
+        ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+-- Không chèn lại dữ liệu nếu đã có mã tương ứng.
+INSERT IGNORE INTO LOP (MaLop, TenLop, Khoa) VALUES
+    ('L01', 'Lớp phần mềm 01', 'K19'), ('L02', 'Lớp phần mềm 02', 'K19');
+INSERT IGNORE INTO SINHVIEN (MaSV, HoTen, MaLop) VALUES
+    ('SV001', 'Nguyễn Văn An', 'L01'), ('SV002', 'Trần Thị Bình', 'L01'),
+    ('SV003', 'Lê Văn Cường', 'L02');
+INSERT IGNORE INTO GIANGVIEN (MaGV, HoTen, BoMon) VALUES
+    ('GV001', 'Phạm Minh Đức', 'Công nghệ phần mềm');
+-- MaLich của hàng dữ liệu mẫu có thể không phải 1 nếu dùng CSDL cũ;
+-- vì vậy chỉ chèn lịch/buổi/điểm danh khi đang nhập trên CSDL thử nghiệm mới.
+INSERT INTO LICHHOC (MaLop, MaGV, MonHoc, Thu, GioBatDau, GioKetThuc, Phong)
+SELECT 'L01', 'GV001', 'Thực tập cơ sở ngành', 2, '08:00:00', '10:30:00', 'P101'
+WHERE NOT EXISTS (SELECT 1 FROM LICHHOC WHERE MaLop='L01' AND MaGV='GV001' AND MonHoc='Thực tập cơ sở ngành');
+INSERT INTO BUOIHOC (MaBuoi, MaLich, NgayHoc, NoiDung)
+SELECT 'B001', MaLich, '2026-10-26', 'Giới thiệu buổi học'
+FROM LICHHOC WHERE MaLop='L01' AND MaGV='GV001' AND MonHoc='Thực tập cơ sở ngành'
+ORDER BY MaLich ASC LIMIT 1
+ON DUPLICATE KEY UPDATE MaBuoi = MaBuoi;
+INSERT IGNORE INTO DIEMDANH (MaBuoi, MaSV, TrangThai, ThoiGian, GhiChu) VALUES
+    ('B001', 'SV001', 'Có mặt', '08:05:00', ''),
+    ('B001', 'SV002', 'Vắng', NULL, '');

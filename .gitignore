@@ -1,0 +1,9 @@
+# Các tệp cấu hình/môi trường bí mật, khi dự án mở rộng.
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,0 +1,77 @@
+BÁO CÁO KIỂM TRA KỸ THUẬT – NHÓM 15
+Ngày kiểm tra: 26/10/2026
+Môi trường kiểm tra: PHP CLI 8.4.24 (không có MySQL/MariaDB và PDO MySQL)
+
+1. Kiểm tra cú pháp: 30/30 tệp PHP đạt theo php -l.
+2. Kiểm tra hàm: 29/29 phép PASS theo php tests/test_helpers.php.
+3. Kiểm tra HTTP bằng máy chủ PHP cục bộ: login.php tải được (200), các trang nội bộ chuyển đến login.php khi chưa đăng nhập; POST login thiếu CSRF bị từ chối HTTP 400.
+4. Chưa chạy xác thực với tài khoản mẫu, CRUD, điểm danh và thông báo qua MySQL. Cần dùng XAMPP và ghi kết quả thật vào docs/BANG_KIEM_THU.md.
+5. Các bộ lọc lịch sử và nghiệp vụ thay đổi thông báo đã rà code, chưa có kết quả tích hợp CSDL.
+
+=== CHI TIẾT PHP -l ===
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/attendance.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/class_delete.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/class_form.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/classes.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/config/database.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/history.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/includes/bootstrap.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/includes/footer.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/includes/header.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/includes/validation.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/index.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/lesson_delete.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/lesson_form.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/lessons.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/login.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/logout.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/notifications.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/schedule.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/schedule_delete.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/schedule_form.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/setup.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/student_delete.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/student_form.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/students.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/teacher_delete.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/teacher_form.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/teachers.php
+No syntax errors detected in /mnt/data/work_nhom15/QL_LopHoc_DiemDanh_Nhom15_HoanThien/tests/test_helpers.php
+
+=== CHI TIẾT KIỂM TRA HÀM ===
+PASS: Escape HTML
+PASS: Tên vai trò
+PASS: CSRF token được tạo
+PASS: Danh sách trạng thái điểm danh
+PASS: Có tệp SQL
+PASS: Mã hợp lệ
+PASS: Mã không hợp lệ bị từ chối
+PASS: Tên tiếng Việt hợp lệ
+PASS: Kiểm tra thứ trong tuần
+PASS: Kiểm tra thời gian
+PASS: Kiểm tra ngày tháng
+PASS: Tính tỷ lệ tham gia
+PASS: Mã sinh viên thông dụng
+PASS: Mã có dấu cách bị từ chối
+PASS: Tên chỉ có dấu cách bị từ chối
+PASS: Tên dài quá giới hạn bị từ chối
+PASS: Ngày thứ Hai và ngoài phạm vi
+PASS: Bắt đầu và kết thúc trùng nhau bị từ chối
+PASS: Giờ ngoài phạm vi bị từ chối
+PASS: Năm nhuận và ngày không hợp lệ
+PASS: Không chia cho 0 khi chưa có bản ghi
+PASS: Tỷ lệ tham gia 100%
+PASS: Tên vai trò sinh viên
+PASS: Không có quyền quản trị khi chưa đăng nhập
+Đã chạy xong 29 phép kiểm tra hàm không cần CSDL.
+
+BỔ SUNG NGÀY 26/10/2026
+- Mã nguồn hiện có 30 tệp PHP (bao gồm account.php và tests/test_database.php).
+- Kiểm tra cú pháp: 30/30 tệp PHP đạt (php -l).
+- Kiểm tra hàm: 29/29 ca không cần CSDL đạt (php tests/test_helpers.php).
+- HTTP: GET /login.php = 200; GET /index.php (chưa đăng nhập) = 302;
+  GET /account.php (chưa đăng nhập) = 302; POST /login.php (thiếu CSRF) = 400;
+  GET /tests/test_database.php qua máy chủ PHP cục bộ = 403.
+- Chưa chạy test MySQL: phiên bản PHP cục bộ của môi trường soạn mã thiếu pdo_mysql;
+  lệnh tests/test_database.php kết thúc mã 2 với thông báo CHƯA CHẠY.
+- Các kết quả HTTP trên dùng PHP built-in server; không chứng minh cấu hình Apache của XAMPP.

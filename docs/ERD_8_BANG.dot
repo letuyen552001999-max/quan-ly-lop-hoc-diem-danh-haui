@@ -1,0 +1,23 @@
+digraph ERD {
+ graph [rankdir=TB, splines=polyline, nodesep=.5, ranksep=.48, bgcolor="white", pad=.2];
+ node [shape=record, fontname="DejaVu Sans",fontsize=12, color="#475569",penwidth=1.2,style="rounded,filled",fillcolor="#eff6ff"];
+ edge [color="#64748b",arrowsize=.65,penwidth=1.2,fontname="DejaVu Sans",fontsize=9];
+ LOP [label="{LOP|PK MaLop : VARCHAR(20)\lTenLop, Khoa\l}",fillcolor="#e0e7ff"];
+ SINHVIEN [label="{SINHVIEN|PK MaSV : VARCHAR(20)\lFK MaLop\lHoTen\l}"];
+ GIANGVIEN [label="{GIANGVIEN|PK MaGV : VARCHAR(20)\lHoTen, BoMon\l}"];
+ LICHHOC [label="{LICHHOC|PK MaLich : INT\lFK MaLop, MaGV\lMonHoc, Thu, Giờ, Phòng\l}"];
+ BUOIHOC [label="{BUOIHOC|PK MaBuoi : VARCHAR(20)\lFK MaLich\lNgayHoc, NoiDung\l}"];
+ DIEMDANH [label="{DIEMDANH|PK (MaBuoi, MaSV)\lFK MaBuoi, MaSV\lTrangThai, ThoiGian, GhiChu\l}",fillcolor="#d1fae5"];
+ TAIKHOAN [label="{TAIKHOAN|PK MaTK : INT\lUK TenDangNhap\lFK MaSV?, MaGV?\lVaiTro, MatKhauHash, TrangThai\l}",fillcolor="#fff7ed"];
+ THONGBAO [label="{THONGBAO|PK MaTB : INT\lFK MaSV, MaBuoi?\lNoiDung, DaXem, ThoiDiem\l}",fillcolor="#fff7ed"];
+ LOP -> SINHVIEN [label="1:N"];
+ LOP -> LICHHOC [label="1:N"];
+ GIANGVIEN -> LICHHOC [label="1:N"];
+ LICHHOC -> BUOIHOC [label="1:N"];
+ BUOIHOC -> DIEMDANH [label="1:N"];
+ SINHVIEN -> DIEMDANH [label="1:N"];
+ SINHVIEN -> TAIKHOAN [label="1:0..1"];
+ GIANGVIEN -> TAIKHOAN [label="1:0..1"];
+ SINHVIEN -> THONGBAO [label="1:N"];
+ BUOIHOC -> THONGBAO [label="1:N"];
+}
