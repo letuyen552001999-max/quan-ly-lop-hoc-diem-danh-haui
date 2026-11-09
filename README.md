@@ -126,6 +126,4 @@ Xem [Kịch bản demo](docs/KICH_BAN_DEMO.md) để thực hiện theo trình t
 - Website phục vụ **học tập trên localhost**, chưa được cấu hình và kiểm thử để triển khai công khai lên Internet.
 - Chỉ sử dụng dữ liệu mẫu. Không tải mật khẩu, dữ liệu sinh viên thật hoặc thông tin cá nhân lên repository Public.
 
-**Tài liệu tham khảo trong dự án:** [ERD](docs/ERD_8_BANG.md) · [Bảng kiểm thử](docs/BANG_KIEM_THU.md) · [Kịch bản demo](docs/KICH_BAN_DEMO.md) · [Câu hỏi bảo vệ](docs/CAU_HOI_BAO_VE.md).
-
-© Nhóm 15 – Bài tập lớn Thực tập cơ sở ngành, HaUI. Việc cấp phép tái sử dụng mã nguồn sẽ được thống nhất trong nhóm trước khi bổ sung tệp LICENSE.
+**Tài liệu tham khảo trong dự án:** [ERD](docs/ERD_8_BANG.md) · [Bảng kiểm thử](docs/BANG_KIEM_THU.md) · [Kịch bản demo](docs/KICH_BAN_DEMO.md) ·
